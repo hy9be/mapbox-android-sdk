@@ -119,6 +119,7 @@ public class WebSourceTileLayer extends TileLayer implements MapboxConstants {
                 if (listener != null) {
                     listener.onTilesLoadStarted();
                 }
+
                 for (final String url : urls) {
                     Bitmap bitmap = getBitmapFromURL(aTile, url, cache);
                     if (bitmap == null) {
@@ -140,25 +141,8 @@ public class WebSourceTileLayer extends TileLayer implements MapboxConstants {
 
             TileLoadedListener listener2 = downloader.getTileLoadedListener();
             if (listener2 != null) {
-                //create the CacheableBitmapDrawable object from the bitmap
-                result = cache.createCacheableBitmapDrawable(resultBitmap, aTile);
-
-                //pass it to onTileLoaded callback for customization, and return the customized CacheableBitmapDrawable object
-                result = listener2.onTileLoaded(result);
-
-                //null pointer checking
-                if (result != null) {
-                    int resultWidth = result.getIntrinsicWidth();
-                    int resultHeight = result.getIntrinsicHeight();
-
-                    //convert the drawable updated in onTileLoaded callback to a bitmap
-                    Bitmap bitmapToCache = Bitmap.createBitmap(resultWidth, resultHeight, Bitmap.Config.ARGB_8888);
-                    Canvas canvas = new Canvas(bitmapToCache);
-                    result.setBounds(0, 0, resultWidth, resultHeight);
-                    result.draw(canvas);
-
-                    cache.putTileBitmap(aTile, bitmapToCache);
-                }
+                Bitmap bitmap = listener2.onTileLoaded(resultBitmap, aTile);
+                result = cache.putTileBitmap(aTile, bitmap);
             } else {
                 if (resultBitmap != null) {
                     //get drawable by putting it into cache (memory and disk)

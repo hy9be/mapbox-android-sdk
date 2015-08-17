@@ -2,6 +2,7 @@ package com.mapbox.mapboxsdk.tileprovider.modules;
 
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+
 import com.mapbox.mapboxsdk.geometry.BoundingBox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.tileprovider.MapTile;
@@ -14,8 +15,8 @@ import com.mapbox.mapboxsdk.util.AppUtils;
 import com.mapbox.mapboxsdk.views.MapView;
 import com.mapbox.mapboxsdk.views.util.TileLoadedListener;
 import com.mapbox.mapboxsdk.views.util.TilesLoadedListener;
+
 import java.util.concurrent.atomic.AtomicReference;
-import uk.co.senab.bitmapcache.CacheableBitmapDrawable;
 
 /**
  * The {@link MapTileDownloader} loads tiles from an HTTP server.
@@ -163,9 +164,5 @@ public class MapTileDownloader extends MapTileModuleLayerBase {
 //            Log.d(TAG, "tileLayer.getDrawable() returning result = '" + result + "'");
             return result;
         }
-    }
-
-    private CacheableBitmapDrawable onTileLoaded(CacheableBitmapDrawable pDrawable) {
-        return mMapView.getTileLoadedListener().onTileLoaded(pDrawable);
     }
 }
